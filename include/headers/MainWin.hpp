@@ -16,15 +16,15 @@ public:
     void rendererClear();
     void render(SDL_Texture *);
     void display();
+
     
 
 
-
+    ~MainWin();
 
     private:
     SDL_Window * m_win;
     SDL_Renderer * m_rend;
-    SDL_Texture * backGround;
     ~MainWin();
 
 };
