@@ -33,6 +33,15 @@ SDL_Texture * MainWin::LoadTexture(char * p_filePath, const int & index)
 
 }
 
+void MainWin::LoadTexture(Entity & entity)
+{
+    SDL_Rect src = entity.getRect();
+    SDL_Rect dst;
+    dst.x = entity.getPosition().X + (entity.getRect().w - entity.getRect(). * entity.getRect().w) / 2;
+    dst.y = entity.getRect().y;
+
+}
+
 
 
 void MainWin::rendererClear() 
@@ -52,3 +61,8 @@ void MainWin::display()
     SDL_RenderPresent(m_rend);
 }
 
+
+MainWin::~MainWin()
+{
+    SDL_DestroyWindow(m_win);
+}
