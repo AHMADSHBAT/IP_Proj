@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "*.sql": "code-text-binary",
+        "vector": "cpp"
+    }
+}
