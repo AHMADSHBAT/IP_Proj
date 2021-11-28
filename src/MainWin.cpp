@@ -3,7 +3,6 @@
 #include <iostream>
 #include <MainWin.hpp>
 
-
 MainWin::MainWin(char * p_title, int p_weidth, int p_hight)
     :m_win(0), m_rend(0)
 {
@@ -18,7 +17,7 @@ MainWin::MainWin(char * p_title, int p_weidth, int p_hight)
 
 }
 
-SDL_Texture * MainWin::LoadTexture(char * p_filePath, const int & index)
+SDL_Texture * MainWin::loadTexture(char * p_filePath, const int & index)
 {
     SDL_Texture * newTexture = 0;
     newTexture = IMG_LoadTexture(m_rend, p_filePath);
@@ -33,14 +32,38 @@ SDL_Texture * MainWin::LoadTexture(char * p_filePath, const int & index)
 
 }
 
-void MainWin::LoadTexture(Entity & entity)
+void MainWin::loadTexture(Entity & entity)
 {
     SDL_Rect src = entity.getRect();
     SDL_Rect dst;
-    dst.x = entity.getPosition().X + (entity.getRect().w - entity.getRect(). * entity.getRect().w) / 2;
-    dst.y = entity.getRect().y;
+    dst.x = entity.getPosition().X + (entity.getRect().w - entity.getRect().w * entity.getScale().second) / 2;
+    dst.y = entity.getPosition().Y + (entity.getRect().h - entity.getRect().h * entity.getScale().first) / 2;
+    dst.w = entity.getRect().w * entity.getScale().second;
+    dst.h = entity.getRect().h * entity.getScale().first;
+
+    SDL_RenderCopyEx(m_rend, entity.getTexture(),&src, &dst, entity.getAngle(), 0, SDL_FLIP_NONE);
 
 }
+
+void MainWin::loadTexture(int x, int y, TexPtr tex)
+{
+    SDL_Rect rect;
+    rect.x = 0;
+    rect.y = 0;
+    rect.y;
+    rect.h;
+
+
+    SDL_Rect dst;
+    dst.x = x; dst.y = y;
+    dst.w = rect.w;
+    dst.h = rect.h;
+
+    SDL_RenderCopy(m_rend, tex, &rect, &dst);
+}
+
+
+
 
 
 

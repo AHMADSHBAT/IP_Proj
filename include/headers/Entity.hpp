@@ -4,7 +4,7 @@
 #include <SDL_image.h>
 #include <SDL.h>
 
-
+typedef std::pair<float, float> fpair;
 
 class Entity
 {
@@ -23,7 +23,9 @@ class Entity
 
         void setAngle(float angle) { angle = angle;}
 
-        void setScale(std::pair<float, float> pair) { scale = pair;}
+        void setScale(fpair p) { scale = p;}
+
+        SDL_Texture * getTexture() { return texture; }
         
 
 
@@ -35,7 +37,7 @@ class Entity
         SDL_Texture * texture;
         Pos pos;
         float angle;
-        std::pair<float, float> scale{1.0f, 1.0f};
+        fpair scale{1.0f, 1.0f};
         SDL_Rect rect;
 
 
