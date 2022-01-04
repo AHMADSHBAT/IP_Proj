@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "*.sql": "code-text-binary",
-        "vector": "cpp"
+        "vector": "cpp",
+        "*.tcc": "cpp"
     }
 }

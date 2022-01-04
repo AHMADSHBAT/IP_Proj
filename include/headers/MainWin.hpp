@@ -5,26 +5,24 @@
 #include <iostream>
 #include <vector>
 #include <utility>
+#include <SDL_ttf.h>
+#include <Obj.hpp>
 
 
 
-class MainWin
+class MainWin 
 {
 public:
-    MainWin(char *,int ,int);
-    SDL_Texture * LoadTexture(char *, const int &);
-    void rendererClear();
-    void render(SDL_Texture *);
-    void display();
-    
-
-
-
-
-    private:
-    SDL_Window * m_win;
-    SDL_Renderer * m_rend;
-    SDL_Texture * backGround;
-    ~MainWin();
-
+	MainWin(const char* p_title, int p_w, int p_h);
+	SDL_Texture* loadTexture(const char* p_filePath);
+	void cleanUp();
+	void clear();
+	void render(Obj& p_entity);
+	void render(int x, int y, SDL_Texture* p_tex);
+	void render(float p_x, float p_y, const char* p_text, TTF_Font* font, SDL_Color textColor);
+	void renderCenter(float p_x, float p_y, const char* p_text, TTF_Font* font, SDL_Color textColor);
+	void display();
+private:
+	SDL_Window* window;
+	SDL_Renderer* renderer;
 };
