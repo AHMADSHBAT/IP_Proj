@@ -1,5 +1,9 @@
 #pragma once
+#include <SDL.h>
+#include <SDL_image.h>
 
+
+typedef SDL_Texture* TexPtr;
 
 class Pos
 {
@@ -14,4 +18,5 @@ class Pos
         void PosPrint();
 
         ~Pos();
+ 
 };

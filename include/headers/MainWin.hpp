@@ -8,6 +8,7 @@
 #include <SDL_ttf.h>
 #include <Obj.hpp>
 
+typedef SDL_Texture* TexPtr;
 
 
 class MainWin 
