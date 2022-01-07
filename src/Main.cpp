@@ -11,13 +11,12 @@
 #include <Hole.hpp>
 #include <SDL_ttf.h>
 
-
-
-
-
-
-
-
+typedef enum
+{
+	G_TITLE = 0,
+	G_GAME,
+	G_END
+} State;
 
 bool  init ()
 {
@@ -32,26 +31,17 @@ bool  init ()
 
 bool SDLinit = init();
 
-MainWin window("Twini-Golf", 640, 480);
+MainWin window("IP_Project", 640, 480);
 
 SDL_Texture* ballTexture = window.loadTexture("res/png/ball.png");
 SDL_Texture* holeTexture = window.loadTexture("res/png/hole.png");
 SDL_Texture* pointTexture = window.loadTexture("res/png/point.png");
-SDL_Texture* ObstacleDarkTexture32 = window.loadTexture("res/png/Obstacle32_dark.png");
-SDL_Texture* ObstacleDarkTexture64 = window.loadTexture("res/png/Obstacle64_dark.png");
 SDL_Texture* ObstacleLightTexture32 = window.loadTexture("res/png/Obstacle32_light.png");
 SDL_Texture* ObstacleLightTexture64 = window.loadTexture("res/png/Obstacle64_light.png");
-SDL_Texture* ballShadowTexture = window.loadTexture("res/png/ball_shadow.png");
 SDL_Texture* bgTexture = window.loadTexture("res/png/bg.png");
-SDL_Texture* uiBgTexture = window.loadTexture("res/png/UI_bg.png");
-SDL_Texture* levelTextBgTexture = window.loadTexture("res/png/levelText_bg.png");
 SDL_Texture* powerMeterTexture_FG = window.loadTexture("res/png/powermeter_fg.png");
 SDL_Texture* powerMeterTexture_BG = window.loadTexture("res/png/powermeter_bg.png");
 SDL_Texture* powerMeterTexture_overlay = window.loadTexture("res/png/powermeter_overlay.png");
-SDL_Texture* logoTexture = window.loadTexture("res/png/logo.png");
-SDL_Texture* click2start = window.loadTexture("res/png/click2start.png");
-SDL_Texture* endscreenOverlayTexture = window.loadTexture("res/png/end.png");
-SDL_Texture* splashBgTexture = window.loadTexture("res/png/splashbg.png");
 
 
 
@@ -67,14 +57,16 @@ std::vector<Hole> holes = {Hole(Pos(0, 0), holeTexture), Hole(Pos(0, 0), holeTex
 std::vector<Obstacle> loadObstacles(int level)
 {
 	std::vector<Obstacle> temp = {};
+
+	/* midifcation for the obstacles based on the current level */
 	switch(level) 
 	{
 		case 0:
-			temp.push_back(Obstacle(Pos(64*3, 64*3), ObstacleDarkTexture64));
-			temp.push_back(Obstacle(Pos(64*4, 64*3), ObstacleDarkTexture64));
+			temp.push_back(Obstacle(Pos(64*3, 64*3), ObstacleLightTexture64));
+			temp.push_back(Obstacle(Pos(64*4, 64*3), ObstacleLightTexture64));
 
-			temp.push_back(Obstacle(Pos(64*0, 64*3), ObstacleDarkTexture64));
-			temp.push_back(Obstacle(Pos(64*1, 64*3), ObstacleDarkTexture64));
+			temp.push_back(Obstacle(Pos(64*0, 64*3), ObstacleLightTexture64));
+			temp.push_back(Obstacle(Pos(64*1, 64*3), ObstacleLightTexture64));
 
 			temp.push_back(Obstacle(Pos(64*3 + 64*5, 64*3), ObstacleLightTexture64));
 			temp.push_back(Obstacle(Pos(64*4 + 64*5, 64*3), ObstacleLightTexture64));
@@ -83,42 +75,9 @@ std::vector<Obstacle> loadObstacles(int level)
 			temp.push_back(Obstacle(Pos(64*1 + 64*5, 64*3), ObstacleLightTexture64));
 		break;
 		case 1:
-			temp.push_back(Obstacle(Pos(64*2, 64*3), ObstacleDarkTexture64));
+			temp.push_back(Obstacle(Pos(64*2, 64*3), ObstacleLightTexture64));
 
 			temp.push_back(Obstacle(Pos(64*4 + 64*5, 64*3), ObstacleLightTexture64));
-		break;
-		case 2:
-			temp.push_back(Obstacle(Pos(32*1 + 32*10 + 16, 32*5), ObstacleLightTexture32));
-		break;
-		case 3:
-			temp.push_back(Obstacle(Pos(32*4, 32*7), ObstacleDarkTexture64));
-			temp.push_back(Obstacle(Pos(32*3, 32*5), ObstacleDarkTexture32));
-			temp.push_back(Obstacle(Pos(32*6, 32*3), ObstacleDarkTexture32));
-
-			temp.push_back(Obstacle(Pos(32*4 + 64*5, 32*2), ObstacleLightTexture64));
-			temp.push_back(Obstacle(Pos(32*3 + 32*10, 32*6), ObstacleLightTexture32));
-			temp.push_back(Obstacle(Pos(32*6 + 32*10, 32*9), ObstacleLightTexture32));
-		break;
-		case 4:
-			temp.push_back(Obstacle(Pos(32*3, 32*1), ObstacleDarkTexture32));
-			temp.push_back(Obstacle(Pos(32*1, 32*3), ObstacleDarkTexture32));
-			temp.push_back(Obstacle(Pos(32*5, 32*3), ObstacleDarkTexture32));
-			temp.push_back(Obstacle(Pos(32*3, 32*5), ObstacleDarkTexture32));
-			temp.push_back(Obstacle(Pos(32*7, 32*5), ObstacleDarkTexture32));
-			temp.push_back(Obstacle(Pos(32*7, 32*10), ObstacleDarkTexture32));
-			temp.push_back(Obstacle(Pos(32*3, 32*10), ObstacleDarkTexture32));
-			temp.push_back(Obstacle(Pos(32*5, 32*12), ObstacleDarkTexture32));
-			temp.push_back(Obstacle(Pos(32*7, 32*10), ObstacleDarkTexture32));
-
-			//temp.push_back(Obstacle(Pos(32*4, 32*7), ObstacleDarkTexture64));
-			temp.push_back(Obstacle(Pos(32*8, 32*7), ObstacleDarkTexture64));
-
-			temp.push_back(Obstacle(Pos(32*2 + 32*10, 32*2), ObstacleLightTexture32));
-			temp.push_back(Obstacle(Pos(32*5 + 32*10, 32*11), ObstacleLightTexture32));
-
-			temp.push_back(Obstacle(Pos(32*3 + 32*10, 32*1), ObstacleLightTexture64));
-			temp.push_back(Obstacle(Pos(32*8 + 32*10, 32*6), ObstacleLightTexture64));
-			temp.push_back(Obstacle(Pos(32*3 + 32*10, 32*11), ObstacleLightTexture64));
 		break;
 	}
 	return temp;
@@ -137,7 +96,7 @@ bool secondSwingPlayed = false;
 
 SDL_Event event;
 
-int state = 0; //0 = title screen, 1 = game, 2 = end screen
+State gameState = G_TITLE; //0 = title screen, 1 = game, 2 = end screen
 
 Uint64 currentTick = SDL_GetPerformanceCounter();
 Uint64 lastTick = 0;
@@ -145,9 +104,9 @@ double deltaTime = 0 ;
 
 void loadLevel(int level)
 {
-	if (level > 4)
+	if (level > 2)
 	{
-		state = 2;
+		gameState = G_END;
 		return;
 	}
 	balls[0].setVelocity(0, 0);
@@ -175,57 +134,10 @@ void loadLevel(int level)
 			holes.at(0).setPos(24 + 32*4, 22 + 32*2);
 			holes.at(1).setPos(24 + 32*4 + 32*10, 22 + 32*2);
 		break;
-		case 2:
-			balls[0].setPos(8 + 32*7, 8 + 32*10);
-			balls[1].setPos(8 + 32*7 + 32*10, 8 + 32*10);
-
-			holes.at(0).setPos(8 + 32*2, 6 + 32*5);
-			holes.at(1).setPos(8 + 32*4 + 32*10, 6 + 32*3);
-		break;
-		case 3:
-			balls[0].setPos(24 + 32*4, 24 + 32*5);
-			balls[1].setPos(24 + 32*4 + 32*10, 24 + 32*4);
-
-			holes.at(0).setPos(24 + 32*4, 22 + 32*1);
-			holes.at(1).setPos(24 + 32*4 + 32*10, 22 + 32*11);
-		break;
-		case 4:	
-			balls[0].setPos(24 + 32*2, 24 + 32*12);
-			balls[1].setPos(24 + 32*0 + 32*10, 24 + 32*5);
-
-			holes.at(0).setPos(24 + 32*1, 22 + 32*1);
-			holes.at(1).setPos(24 + 32*0 + 32*10, 22 + 32*7);
-		break;
 	}
 }
 
-const char* getStrokeText()
-{
-	int biggestStroke = 0;
-	if (balls[1].getStrokes() > balls[0].getStrokes())
-	{
-		biggestStroke = balls[1].getStrokes();
-	}
-	else
-	{
-		biggestStroke = balls[0].getStrokes();
-	}
-	std::string s = std::to_string(biggestStroke);
-	s = "STROKES: " + s;
-	return s.c_str();
-}
 
-const char* getLevelText(int side)
-{
-	int tempLevel = (level + 1)*2 - 1;
-	if (side == 1)
-	{
-		tempLevel++;
-	}
-	std::string s = std::to_string(tempLevel);
-	s = "HOLE: " + s;
-	return s.c_str();
-}
 
 void  update ()
 {
@@ -259,12 +171,14 @@ void  update ()
 		}
 	}
 
-	if (state == 1)
+	if (gameState == G_GAME)
 	{
 		for (Ball& b : balls)
 		{
+			/* updating the state of the tow balls */
 			b.update(deltaTime, mouseDown, mousePressed, Obstacles, holes);
 		}
+		/* if both balls hit the hole then increase the level up. */
 		if (balls[0].getScale().x < -1 && balls[1].getScale().x < -1)
  		{
         	level++;
@@ -283,10 +197,6 @@ void graphics()
 	}
 	for (Ball& b : balls)
 	{
-		if (!b.isWin())
-		{
-			window.render(b.getPos().x, b.getPos().y + 4, ballShadowTexture);
-		}
 		for (Obj& e : b.getPoints())
 		{
 			window.render(e);
@@ -306,27 +216,9 @@ void graphics()
 		window.render(b.getPowerBar().at(0).getPos().x, b.getPowerBar().at(0).getPos().y, powerMeterTexture_overlay);
 		
 	}
-	if (state != 2)
+	if (gameState == G_END)
 	{
-		window.render(640/4 - 132/2, 480 - 32, levelTextBgTexture);
-		window.renderCenter(-160, 240 - 16 + 3, getLevelText(0), font24, black);
-		window.renderCenter(-160, 240 - 16, getLevelText(0), font24, white);
-
-		window.render(640/2 + 640/4 - 132/2, 480 - 32, levelTextBgTexture);
-		window.renderCenter(160, 240 - 16 + 3, getLevelText(1), font24, black);
-		window.renderCenter(160, 240 - 16, getLevelText(1), font24, white);
-
-		window.render(640/2 - 196/2, 0, uiBgTexture);
-		window.renderCenter(0, -240 + 16 + 3, getStrokeText(), font24, black);
-		window.renderCenter(0, -240 + 16, getStrokeText(), font24, white);
-	}
-	else
-	{
-		window.render(0, 0, endscreenOverlayTexture);
-		window.renderCenter(0, 3 - 32, "YOU COMPLETED THE COURSE!", font48, black);
-		window.renderCenter(0, -32, "YOU COMPLETED THE COURSE!", font48, white);
-		window.renderCenter(0, 3 + 32, getStrokeText(), font32, black);
-		window.renderCenter(0, 32, getStrokeText(), font32, white);
+		window.renderCenter(0, -32, "THE END", font48, white);
 	}
 	window.display();
 }
@@ -335,10 +227,6 @@ void titleScreen()
 {
 	if (SDL_GetTicks() < 2000)
 	{
-		if (!swingPlayed)
-		{
-			swingPlayed = true;
-		}
 		//Get our controls and events
 		while (SDL_PollEvent(&event))
 		{
@@ -352,17 +240,11 @@ void titleScreen()
 
 		window.clear();
 		window.render(0, 0, bgTexture);
-		window.render(0, 0, splashBgTexture);
-		window.renderCenter(0, 0 + 3, "POLYMARS", font32, black);
-		window.renderCenter(0, 0, "POLYMARS", font32, white);
+		window.renderCenter(0, 0, "Golf", font32, white);
 		window.display();
 	}
 	else
 	{
-		if (!secondSwingPlayed)
-		{
-			secondSwingPlayed = true;
-		}
 		lastTick = currentTick;
 		currentTick = SDL_GetPerformanceCounter();
 		deltaTime = (double)((currentTick - lastTick)*1000 / (double)SDL_GetPerformanceFrequency() );
@@ -379,23 +261,20 @@ void titleScreen()
 				if (event.button.button == SDL_BUTTON_LEFT)
 				{
 
-					state = 1;
+					gameState = G_GAME;
 				}
 				break;
 			}
 		}
 		window.clear();
 		window.render(0, 0, bgTexture);
-		window.render(320 - 160, 240 - 100 - 50 + 4*SDL_sin(SDL_GetTicks()*(3.14/1500)), logoTexture);
-		window.render(0, 0, click2start);
-		window.renderCenter(0, 240 - 48 + 3 - 16*5, "LEFT CLICK TO START", font32, black);
-		window.renderCenter(0, 240 - 48 - 16*5, "LEFT CLICK TO START", font32, white);
+		window.renderCenter(0, 240 - 48 - 16*5, "START", font32, white);
 		window.display();
 	}
 }
 void  game ()
 {
-	if (state == 0)
+	if (gameState == 0)
 	{
 		titleScreen();
 	}

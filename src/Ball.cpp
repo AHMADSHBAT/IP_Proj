@@ -96,7 +96,7 @@ void Ball::update(double deltaTime, bool mouseDown, bool mousePressed, std::vect
 	    SDL_GetMouseState(&mouseX, &mouseY);
         setVelocity ((mouseX - getInitialMousePos (). x ) / - 150 , (mouseY - getInitialMousePos (). y ) / - 150 );
         setLaunchedVelocity ((mouseX - getInitialMousePos (). x ) / - 150 , (mouseY - getInitialMousePos (). y ) / - 150 );
-        velocity1D = SDL_sqrt(SDL_pow(abs(getVelocity().x), 2) + SDL_pow(abs(getVelocity().y), 2));
+        velocity1D = SDL_sqrt((getVelocity().x) + abs(getVelocity().y));
         launchedVelocity1D = velocity1D;
  
         lunchPower.at(0).setPos(getPos().x, getPos().y + 8 - 32);
@@ -104,7 +104,7 @@ void Ball::update(double deltaTime, bool mouseDown, bool mousePressed, std::vect
 
         dirX = velocity.x/abs(velocity.x);
         dirY = velocity.y/abs(velocity.y);
-
+        /* setting the power bar on beside the ball */
         powerBar.at(0).setPos(getPos().x + 40, getPos().y - 32);
         powerBar.at(1).setPos(getPos().x + 44, getPos().y + 4 - 32*powerBar.at(1).getScale().y);
         if (velocity1D > 1)
@@ -116,23 +116,14 @@ void Ball::update(double deltaTime, bool mouseDown, bool mousePressed, std::vect
     }
     else
     {
-        if (!playedSwingFx)
-        {
-            playedSwingFx = true;
-            strokes++;
-        }
+        /* moving algorithm */
         lunchPower.at(0).setPos(-64, -64);
         powerBar.at(0).setPos(-64, -64);
         powerBar.at(1).setPos(-64, -64);
         canMove = false ;
         setPos ( getPos (). x + getVelocity (). x * deltaTime, getPos (). y + getVelocity (). y * deltaTime);
-        if (getVelocity().x > 0.0001 || getVelocity().x < -0.0001 || getVelocity().y > 0.0001 || getVelocity().y < -0.0001)
+        if (getVelocity().x > 0.001 || getVelocity().x < -0.001 || getVelocity().y > 0.001 || getVelocity().y < -0.001)
         {
-            //float xDir = velocity.x/abs(velocity.x);
-            //float yDir = velocity.y/abs(velocity.y);
-
-            //velocity.x = (abs(velocity.x) - friction*deltaTime)*xDir;
-            //velocity.y = (abs(velocity.y) - friction*deltaTime)*yDir;
             if (velocity1D > 0)
             {
                 velocity1D -= friction * deltaTime;
@@ -155,33 +146,38 @@ void Ball::update(double deltaTime, bool mouseDown, bool mousePressed, std::vect
             setInitialMousePos(mouseX, mouseY);
             canMove = true;
         }
-
+        /* to split the screen into two sides */
         if (getPos().x + getCurrentFrame().w > 640/(2 - index))
         {
+            /* reversing the ball when it hits the right wall */
             setVelocity(-abs(getVelocity().x), getVelocity().y);
             dirX = -1;
         }
         else if (getPos().x < 0 + (index*320))
         {
+            /* reversing the ball when it hits the left wall */
             setVelocity(abs(getVelocity().x), getVelocity().y);
             dirX = 1;
         }
         else if (getPos().y + getCurrentFrame().h > 480)
         {
+            /* reversing the ball when it hits the bottom wall */
             setVelocity(getVelocity().x, -abs(getVelocity().y));
             dirY = - 1 ;
         }
         else if (getPos().y < 0)
         {
+            /* reversing the ball when it hits the up wall */
             setVelocity(getVelocity().x, abs(getVelocity().y));
             dirY = 1 ;
         }
-
+        /* reversing the ball if it his one of the obstacles */
         for (Obstacle& t : Obstacles)
 	    { 
 		    float newX = getPos().x + getVelocity().x*deltaTime;
             float newY = getPos ().y ;
-            if (newX + 16 > t.getPos().x && newX < t.getPos().x + t.getCurrentFrame().w && newY + 16 > t.getPos().y && newY < t.getPos().y + t.getCurrentFrame().h - 3)
+            if (newX + 16 > t.getPos().x && newX < t.getPos().x + t.getCurrentFrame().w &&
+                newY + 16 > t.getPos().y && newY < t.getPos().y + t.getCurrentFrame().h - 3)
             {
                 setVelocity ( getVelocity (). x * - 1 , getVelocity (). y );
                 dirX *= -1;
