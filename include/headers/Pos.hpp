@@ -12,7 +12,7 @@ class Pos
         Pos(float x, float y);
 
 
-        float X, Y;
+        float x, y;
 
 
         void PosPrint();

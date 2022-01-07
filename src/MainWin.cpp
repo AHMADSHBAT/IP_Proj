@@ -48,32 +48,14 @@ void MainWin::render(Obj& p_Obj)
 	src.h = p_Obj.getCurrentFrame().h;
 
 	SDL_Rect dst;
-	dst.x = p_Obj.getPos().X + (p_Obj.getCurrentFrame().w - p_Obj.getCurrentFrame().w*p_Obj.getScale().X)/2;
-	dst.y = p_Obj.getPos().Y + (p_Obj.getCurrentFrame().h - p_Obj.getCurrentFrame().h*p_Obj.getScale().Y)/2;
-	dst.w = p_Obj.getCurrentFrame().w*p_Obj.getScale().X;
-	dst.h = p_Obj.getCurrentFrame().h*p_Obj.getScale().Y;
+	dst.x = p_Obj.getPos().x + (p_Obj.getCurrentFrame().w - p_Obj.getCurrentFrame().w*p_Obj.getScale().x)/2;
+	dst.y = p_Obj.getPos().y + (p_Obj.getCurrentFrame().h - p_Obj.getCurrentFrame().h*p_Obj.getScale().y)/2;
+	dst.w = p_Obj.getCurrentFrame().w*p_Obj.getScale().x;
+	dst.h = p_Obj.getCurrentFrame().h*p_Obj.getScale().y;
 
 	SDL_RenderCopyEx(renderer, p_Obj.getTex(), &src, &dst, p_Obj.getAngle(), 0, SDL_FLIP_NONE);
 }
 
-void MainWin::render(int x, int y, SDL_Texture* p_tex)
-{
-	SDL_Rect src; 
-	src.x = 0;
-	src.y = 0;
-	src.w;
-	src.h;
-
-	SDL_QueryTexture(p_tex, NULL, NULL, &src.w, &src.h);
-
-	SDL_Rect dst;
-	dst.x = x;
-	dst.y = y;
-	dst.w = src.w;
-	dst.h = src.h;
-
-	SDL_RenderCopy(renderer, p_tex, &src, &dst);
-}
 
 void MainWin::render(float p_x, float p_y, const char* p_text, TTF_Font* font, SDL_Color textColor)
 {
@@ -88,7 +70,7 @@ void MainWin::render(float p_x, float p_y, const char* p_text, TTF_Font* font, S
 
 		SDL_Rect dst;
 		dst.x = p_x;
-		dst.y = p_y;
+		dst. y = p_y;
 		dst.w = src.w;
 		dst.h = src.h;
 
@@ -96,6 +78,7 @@ void MainWin::render(float p_x, float p_y, const char* p_text, TTF_Font* font, S
 		SDL_FreeSurface(surfaceMessage);
 	 	SDL_DestroyTexture(message);
 }
+
 
 void MainWin::renderCenter(float p_x, float p_y, const char* p_text, TTF_Font* font, SDL_Color textColor)
 {
@@ -118,6 +101,29 @@ void MainWin::renderCenter(float p_x, float p_y, const char* p_text, TTF_Font* f
 		SDL_FreeSurface(surfaceMessage);
 		SDL_DestroyTexture(message);
 }
+
+
+
+void MainWin::render(int x, int y, SDL_Texture* p_tex)
+{
+	SDL_Rect src; 
+	src.x = 0;
+	src. y = 0;
+	src.w;
+	src.h;
+
+	SDL_QueryTexture(p_tex, NULL, NULL, &src.w, &src.h);
+
+	SDL_Rect dst;
+	dst.x = x;
+	dst. y = y;
+	dst.w = src.w;
+	dst.h = src.h;
+
+	SDL_RenderCopy(renderer, p_tex, &src, &dst);
+}
+
+
 
 void MainWin::display()
 {

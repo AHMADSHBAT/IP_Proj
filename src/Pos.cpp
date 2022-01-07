@@ -4,15 +4,15 @@
 
 
 Pos::Pos()
-    :X(0.0f), Y(0.0f){}
+    :x(0.0f), y(0.0f){}
 
 
 Pos::Pos(float x, float y)
-    :X(x), Y(y){}
+    :x(x), y(y){}
 
 void Pos::PosPrint()
 {
-    std::cout << "ball at position " << X << " and " << Y  << " \n";
+    std::cout << "ball at position " << x << " and " << y  << " \n";
 }
 
 Pos::~Pos(){}

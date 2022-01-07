@@ -28,8 +28,8 @@ void Obj::update(double deltaTime)
 
 void Obj::setPos(float x, float y)
 {
-	pos.X = x;
-	pos.Y = y;
+	pos.x = x;
+	pos.y = y;
 }
 
 void Obj::setAngle(float p_angle)
@@ -39,8 +39,8 @@ void Obj::setAngle(float p_angle)
 
 void Obj::setScale(float w, float h)
 {
-	scale.X = w;
-	scale.Y = h;
+	scale.x = w;
+	scale.y = h;
 }
 
 SDL_Rect Obj::getCurrentFrame()
